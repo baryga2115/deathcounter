@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Licznik Śmierci</title>
+  <style>
+    body {
+      margin: 0;
+      background: transparent;
+      font-family: 'Arial', sans-serif;
+      color: white;
+      font-size: 72px;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-shadow: 0 0 10px red;
+    }
+  </style>
+</head>
+<body>
+  <div id="counter">Śmierci: <span id="deaths">0</span></div>
+
+  <script>
+    async function fetchDeathCount() {
+      try {
+        const response = await fetch('death_count.txt', { cache: "no-store" });
+        const text = await response.text();
+        document.getElementById('deaths').textContent = text.trim();
+      } catch (e) {
+        document.getElementById('deaths').textContent = 'BŁĄD';
+      }
+    }
+
+    fetchDeathCount();
+    setInterval(fetchDeathCount, 5000); // odświeżaj co 5s
+  </script>
+</body>
+</html>
