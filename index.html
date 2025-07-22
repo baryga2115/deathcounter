@@ -23,15 +23,17 @@
   <div id="counter">Śmierci: <span id="deaths">0</span></div>
 
   <script>
-    async function fetchDeathCount() {
-      try {
-        const response = await fetch('death_count.txt', { cache: "no-store" });
-        const text = await response.text();
-        document.getElementById('deaths').textContent = text.trim();
-      } catch (e) {
-        document.getElementById('deaths').textContent = 'BŁĄD';
-      }
-    }
+async function fetchDeathCount() {
+  try {
+    const response = await fetch('data.json?v=' + Date.now(), { cache: "no-store" });
+    if (!response.ok) throw new Error("Brak pliku");
+    const json = await response.json();
+    document.getElementById('deaths').textContent = json.deaths;
+  } catch (e) {
+    document.getElementById('deaths').textContent = 'BŁĄD';
+  }
+}
+
 
     fetchDeathCount();
     setInterval(fetchDeathCount, 3000); // odświeżanie co 3s
